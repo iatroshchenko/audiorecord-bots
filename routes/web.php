@@ -49,3 +49,7 @@ Route::get('email/verify', [EmailVerificationController::class, 'verifyEmail'])
     ->name('verification.verify')
     ->middleware(['signed']);
 
+/* Pages */
+Route::get('records', [PageController::class, 'records'])
+    ->name('pages.records')
+    ->middleware('auth');

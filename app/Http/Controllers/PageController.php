@@ -31,9 +31,17 @@ class PageController extends Controller
 
     public function start(Request $request)
     {
-        $started = $this->adminService->getSuperadmin();
+        $started = $this
+            ->adminService
+            ->getSuperadmin();
+
         if ($started) abort(404);
 
         return Inertia::render('Start');
+    }
+
+    public function records(Request $request)
+    {
+        return Inertia::render('Records');
     }
 }

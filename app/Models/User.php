@@ -7,9 +7,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\URL;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -26,7 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'email_verified_at'
     ];
 
     /**

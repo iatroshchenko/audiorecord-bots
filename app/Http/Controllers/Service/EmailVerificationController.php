@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -18,6 +19,10 @@ class EmailVerificationController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        dd('here');
+        $user = User::find($request->input('id'));
+        $user->update([
+            'email_verified_at' => now()
+        ]);
+        redirect('/');
     }
 }

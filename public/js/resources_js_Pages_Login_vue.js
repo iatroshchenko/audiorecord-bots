@@ -1753,7 +1753,7 @@ var render = function() {
                 attrs: { "with-lock-icon": true, loading: _vm.loading },
                 on: { clicked: _vm.submitLoginForm }
               },
-              [_vm._v("\n        Create Account\n      ")]
+              [_vm._v("\n        Sign In\n      ")]
             )
           ],
           1

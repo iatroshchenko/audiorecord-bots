@@ -60,7 +60,7 @@
           :loading="loading"
           @clicked="submitLoginForm"
         >
-          Create Account
+          Sign In
         </SubmitButton>
       </form>
     </div>
