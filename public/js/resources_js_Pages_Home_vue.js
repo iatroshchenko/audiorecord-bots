@@ -255,6 +255,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "DesktopMenu",
@@ -264,6 +266,11 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     user: function user() {
       return this.$page.props.user.data || null;
+    }
+  },
+  methods: {
+    onOpenMobileMenuClick: function onOpenMobileMenuClick() {
+      this.$emit('open-mobile-menu');
     }
   }
 });
@@ -539,8 +546,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "MobileMenu"
+  name: "MobileMenu",
+  props: {
+    show: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      isShown: false
+    };
+  },
+  methods: {
+    hide: function hide() {
+      this.$emit('hide');
+    }
+  },
+  watch: {
+    show: function show(val) {
+      this.isShown = !!val;
+    }
+  }
 });
 
 /***/ }),
@@ -565,6 +598,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -572,6 +610,22 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     DesktopMenu: _DesktopMenu__WEBPACK_IMPORTED_MODULE_0__.default,
     MobileMenu: _MobileMenu__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      mobileMenuShown: false
+    };
+  },
+  methods: {
+    toggleMobileMenu: function toggleMobileMenu(val) {
+      this.mobileMenuShown = !!val;
+    },
+    onMobileMenuHide: function onMobileMenuHide() {
+      this.toggleMobileMenu(false);
+    },
+    onMobileMenuOpen: function onMobileMenuOpen() {
+      this.toggleMobileMenu(true);
+    }
   }
 });
 
@@ -1170,7 +1224,8 @@ var render = function() {
               {
                 staticClass:
                   "bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500",
-                attrs: { type: "button" }
+                attrs: { type: "button" },
+                on: { click: _vm.onOpenMobileMenuClick }
               },
               [
                 _c("span", { staticClass: "sr-only" }, [_vm._v("Open menu")]),
@@ -2005,317 +2060,341 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "mobile-menu" }, [
-    _c(
-      "div",
-      {
-        staticClass:
-          "absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass:
-              "rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50"
-          },
-          [
-            _c("div", { staticClass: "pt-5 pb-6 px-5" }, [
-              _c("div", { staticClass: "flex items-center justify-between" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "-mr-2" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500",
-                      attrs: { type: "button" }
-                    },
-                    [
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("Close menu")
-                      ]),
-                      _vm._v(" "),
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.isShown,
+          expression: "isShown"
+        }
+      ],
+      staticClass: "mobile-menu"
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50"
+            },
+            [
+              _c("div", { staticClass: "pt-5 pb-6 px-5" }, [
+                _c(
+                  "div",
+                  { staticClass: "flex items-center justify-between" },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "-mr-2" }, [
                       _c(
-                        "svg",
+                        "button",
                         {
-                          staticClass: "h-6 w-6",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
+                          staticClass:
+                            "bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500",
+                          attrs: { type: "button" },
+                          on: { click: _vm.hide }
                         },
                         [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d: "M6 18L18 6M6 6l12 12"
-                            }
-                          })
+                          _c("span", { staticClass: "sr-only" }, [
+                            _vm._v("Close menu")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "h-6 w-6",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                fill: "none",
+                                viewBox: "0 0 24 24",
+                                stroke: "currentColor",
+                                "aria-hidden": "true"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M6 18L18 6M6 6l12 12"
+                                }
+                              })
+                            ]
+                          )
                         ]
                       )
-                    ]
-                  )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-6" }, [
+                  _c("nav", { staticClass: "grid gap-y-8" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "flex-shrink-0 h-6 w-6 text-indigo-600",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor",
+                              "aria-hidden": "true"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "ml-3 text-base font-medium text-gray-900"
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Analytics\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "flex-shrink-0 h-6 w-6 text-indigo-600",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor",
+                              "aria-hidden": "true"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "ml-3 text-base font-medium text-gray-900"
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Engagement\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "flex-shrink-0 h-6 w-6 text-indigo-600",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor",
+                              "aria-hidden": "true"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "ml-3 text-base font-medium text-gray-900"
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Security\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "flex-shrink-0 h-6 w-6 text-indigo-600",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor",
+                              "aria-hidden": "true"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "ml-3 text-base font-medium text-gray-900"
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Integrations\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "flex-shrink-0 h-6 w-6 text-indigo-600",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              fill: "none",
+                              viewBox: "0 0 24 24",
+                              stroke: "currentColor",
+                              "aria-hidden": "true"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "ml-3 text-base font-medium text-gray-900"
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Automations\n                "
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ])
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "mt-6" }, [
-                _c("nav", { staticClass: "grid gap-y-8" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
-                      attrs: { href: "#" }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "flex-shrink-0 h-6 w-6 text-indigo-600",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "ml-3 text-base font-medium text-gray-900"
-                        },
-                        [
-                          _vm._v(
-                            "\n                  Analytics\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
-                      attrs: { href: "#" }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "flex-shrink-0 h-6 w-6 text-indigo-600",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "ml-3 text-base font-medium text-gray-900"
-                        },
-                        [
-                          _vm._v(
-                            "\n                  Engagement\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
-                      attrs: { href: "#" }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "flex-shrink-0 h-6 w-6 text-indigo-600",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "ml-3 text-base font-medium text-gray-900"
-                        },
-                        [
-                          _vm._v(
-                            "\n                  Security\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
-                      attrs: { href: "#" }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "flex-shrink-0 h-6 w-6 text-indigo-600",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "ml-3 text-base font-medium text-gray-900"
-                        },
-                        [
-                          _vm._v(
-                            "\n                  Integrations\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "-m-3 p-3 flex items-center rounded-md hover:bg-gray-50",
-                      attrs: { href: "#" }
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "flex-shrink-0 h-6 w-6 text-indigo-600",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            fill: "none",
-                            viewBox: "0 0 24 24",
-                            stroke: "currentColor",
-                            "aria-hidden": "true"
-                          }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "ml-3 text-base font-medium text-gray-900"
-                        },
-                        [
-                          _vm._v(
-                            "\n                  Automations\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(1)
-          ]
-        )
-      ]
-    )
-  ])
+              _vm._m(1)
+            ]
+          )
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -2476,7 +2555,14 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "my-navbar relative bg-white" },
-    [_c("DesktopMenu"), _vm._v(" "), _c("MobileMenu")],
+    [
+      _c("desktop-menu", { on: { "open-mobile-menu": _vm.onMobileMenuOpen } }),
+      _vm._v(" "),
+      _c("mobile-menu", {
+        attrs: { show: _vm.mobileMenuShown },
+        on: { hide: _vm.onMobileMenuHide }
+      })
+    ],
     1
   )
 }

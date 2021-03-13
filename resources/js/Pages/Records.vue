@@ -1,5 +1,23 @@
 <template>
   <div>
+    <create-record-modal
+      :show="createRecordModalShown"
+      @hide="onCreateRecordModalHide"
+      @done="onCreateRecordModalDone"
+    ></create-record-modal>
+
+    <div class="rounded-t-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 p-10">
+      <div class="text-right">
+        <simple-button
+          hover-bg-color="indigo-700"
+          bg-color="indigo-600"
+          @clicked="onAddRecordButtonClick"
+        >
+          Add Record <i class='ml-1 icon bx bx-user-voice'></i>
+        </simple-button>
+      </div>
+    </div>
+
     <server-paginated-table
       :headers="headers"
       :items="items"
@@ -38,16 +56,24 @@
   import AppLayout from "../layouts/AppLayout";
   import ServerPaginatedTable from "../components/pagination/ServerPaginatedTable";
   import PaginationLinks from "../components/pagination/PaginationLinks";
+  import SimpleButton from "../components/ui/SimpleButton";
+  import CreateRecordModal from "../components/pages/records/CreateRecordModal";
 
   export default {
     name: "Records",
     layout: AppLayout,
     components: {
       ServerPaginatedTable,
-      PaginationLinks
+      PaginationLinks,
+      SimpleButton,
+      CreateRecordModal
     },
     data() {
       return {
+        /* Add Record */
+        createRecordModalShown: false,
+        /* Add Record */
+
         headers: [
           {
             text: 'Dessert (100g serving)',
@@ -152,11 +178,28 @@
       },
       onSort(field) {
         this.sortBy = field;
+      },
+
+      /* Add Record */
+      toggleCreateRecordModal(val) {
+        this.createRecordModalShown = !!val;
+      },
+      onAddRecordButtonClick() {
+        this.toggleCreateRecordModal(true);
+      },
+      onCreateRecordModalHide() {
+        this.toggleCreateRecordModal(false);
+      },
+      onCreateRecordModalDone() {
+        this.toggleCreateRecordModal(false);
       }
+      /* Add Record */
     }
   }
 </script>
 
 <style scoped>
-
+  i.icon {
+    font-size: 24px;
+  }
 </style>
