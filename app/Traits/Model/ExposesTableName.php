@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Concerns;
+namespace App\Traits\Model;
 
 
 trait ExposesTableName

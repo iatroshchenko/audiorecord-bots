@@ -50945,7 +50945,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Home_vue":"f1016b58f62b3f9d8c7d","resources_js_Pages_Login_vue":"5014b79e4a8acdcd8205","resources_js_Pages_Records_vue":"7160e0d44dd7ea85367f","resources_js_Pages_Start_vue":"e32237ed8a1124bb69b5","resources_js_Pages_VerifyEmail_vue":"ac4003212c1bd6015b0b"}[chunkId] + "";
+/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Home_vue":"f1016b58f62b3f9d8c7d","resources_js_Pages_Login_vue":"5014b79e4a8acdcd8205","resources_js_Pages_Records_vue":"78fdb670bf7fb532d38a","resources_js_Pages_Start_vue":"e32237ed8a1124bb69b5","resources_js_Pages_VerifyEmail_vue":"9d9e909a9e0e4cf4a8ee"}[chunkId] + "";
 /******/ 		};
 /******/ 	})();
 /******/ 	

@@ -43,16 +43,77 @@
             </div>
           </div>
         </div>
+
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+          <div class="-mx-3 mb-6">
+            <div class="px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="record-name">
+                Record Name
+              </label>
+              <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="record-name" type="text" placeholder="This is record name">
+              <p class="text-red text-xs italic">The record will be available for search by this name.</p>
+            </div>
+
+            <div class="px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="record-file">
+                .ogg File
+              </label>
+              <input
+                ref="recordFile"
+                @change="onRecordFileUpload"
+                type="file"
+                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
+                id="record-file"
+              >
+              <p class="text-red text-xs italic">The record itself</p>
+            </div>
+
+            <div class="px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="record-default-search">
+                Default Search available
+              </label>
+              <input v-model="record.default_search_available" type="checkbox" id="record-default-search" placeholder="This is record name">
+              <p class="text-red text-xs italic">Determine if record is available in default search</p>
+            </div>
+
+            <div class="px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+                Tags
+              </label>
+
+              <div>
+                <multiselect
+                  v-model="record.tags"
+                  tag-placeholder="Add this as new tag"
+                  placeholder="Search or add a tag"
+                  label="name"
+                  track-by="uuid"
+                  :options="tags"
+                  :multiple="true"
+                  :taggable="true"
+                  @tag="addTag"
+                ></multiselect>
+                <pre class="language-json"><code>{{ record.tags  }}</code></pre>
+              </div>
+
+              <p class="text-red text-xs italic">The record will be available for search by this tags: #tag@search </p>
+            </div>
+
+          </div>
+        </div>
+
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
           <simple-button
             hover-bg-color="indigo-700"
             bg-color="indigo-600"
             class="ml-1"
+            :loading="creatingRecord"
+            @click="onUploadRecordClick"
           >
             Upload
           </simple-button>
           <simple-button
-            @clicked="hide()"
+            @clicked="hide"
             hover-bg-color="gray-100"
             bg-color="gray-200"
             text-color="gray-700"
@@ -68,15 +129,30 @@
 
 <script>
   import SimpleButton from "../../ui/SimpleButton";
+  import Multiselect from 'vue-multiselect';
+  import axios from 'axios';
 
   export default {
     name: "CreateRecordModal",
     components: {
-      SimpleButton
+      SimpleButton,
+      Multiselect
     },
     data() {
       return {
-        isShown: false
+        isShown: false,
+        record: {
+          name: '',
+          file: null,
+          default_search_available: false,
+          tags: []
+        },
+
+        /* Tags */
+        tags: [],
+
+        /* Creating Record */
+        creatingRecord: false
       }
     },
     props: {
@@ -93,7 +169,78 @@
     methods: {
       hide() {
         this.$emit('hide');
+      },
+      addTag (newTag) {
+        this.uploadTagFromInput(newTag)
+          .then(res => {
+            const tag = {...res.data.data};
+            this
+              .loadTags()
+              .then(res => {
+                this.record.tags.push(tag);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      },
+
+      /* Create Record */
+      onUploadRecordClick() {
+        if (this.creatingRecord) return;
+        this.creatingRecord = true;
+
+        this.createRecord()
+          .then(res => {
+            this.$emit('done');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+          .finally(() => {
+            this.creatingRecord = false;
+          });
+      },
+      createRecord() {
+        const fd = new FormData();
+
+        Object.keys(this.record)
+          .forEach(key => {
+            if (typeof this.record[key] === 'object') {
+              fd.append(key, JSON.stringify(this.record[key]));
+            } else {
+              fd.append(key, this.record[key]);
+            }
+          });
+
+        fd.append('file', this.$refs.recordFile.files[0] || null);
+
+        return axios.post('/internal/records', {
+          ...fd
+        })
+      },
+
+      /* Upload */
+      uploadTagFromInput(name) {
+        return axios.post('/internal/tags', {
+          name
+        });
+      },
+
+
+      /* Load */
+      loadTags() {
+        return axios.get('/internal/tags')
+          .then(res => {
+            this.tags = [...res.data.data];
+          })
+          .catch(err => {
+            console.log(err);
+          })
       }
+    },
+    mounted() {
+      this.loadTags();
     }
   }
 </script>

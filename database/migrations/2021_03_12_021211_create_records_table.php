@@ -15,7 +15,11 @@ class CreateRecordsTable extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('uuid');
+            $table->string('name');
+            $table
+                ->boolean('default_search_available')
+                ->default(true); // determine if item is available without #tag@search
             $table->string('path'); // relative path for local or s3
             $table->timestamps();
         });

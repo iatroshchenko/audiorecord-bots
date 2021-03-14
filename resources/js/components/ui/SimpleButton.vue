@@ -9,13 +9,23 @@
         ${hoverTextColor ? 'hover:text-' + hoverTextColor : 'hover:text-white'}
      `"
   >
-    <slot/>
+    <Loader
+      v-if="loading"
+    ></Loader>
+    <slot
+      v-else
+    />
   </a>
 </template>
 
 <script>
+  import Loader from "./Loader";
+
   export default {
     name: "SimpleButton",
+    components: {
+      Loader
+    },
     props: {
       hoverBgColor: {
         type: String,
@@ -30,6 +40,9 @@
       },
       hoverTextColor: {
         type: String
+      },
+      loading: {
+        type: Boolean
       }
     }
   }
