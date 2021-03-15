@@ -19,8 +19,13 @@ class CreateRecordsTable extends Migration
             $table->string('name');
             $table
                 ->boolean('default_search_available')
-                ->default(true); // determine if item is available without #tag@search
+                ->default(false); // determine if item is available without #tag@search
+
             $table->string('path'); // relative path for local or s3
+            $table
+                ->boolean('is_remote')
+                ->nullable();
+
             $table->timestamps();
         });
     }

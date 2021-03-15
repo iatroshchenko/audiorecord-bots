@@ -50,22 +50,34 @@
               <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="record-name">
                 Record Name
               </label>
-              <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="record-name" type="text" placeholder="This is record name">
+              <input v-model="record.name" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="record-name" type="text" placeholder="This is record name">
               <p class="text-red text-xs italic">The record will be available for search by this name.</p>
             </div>
 
             <div class="px-3 mb-6 md:mb-0">
-              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="record-file">
+              <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
                 .ogg File
               </label>
-              <input
-                ref="recordFile"
-                @change="onRecordFileUpload"
-                type="file"
-                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                id="record-file"
-              >
-              <p class="text-red text-xs italic">The record itself</p>
+
+              <file-pond
+                name="file"
+                ref="pond"
+                label-idle="Upload the .ogg record file"
+                accepted-file-types="audio/ogg"
+                :allow-multiple="false"
+                :server="{
+                  url: $backendRoute('internal.record.upload'),
+                  process: {
+                    headers: {
+                      'X-CSRF-TOKEN': $page.props.csrfToken,
+                      'accept': 'application/json'
+                    },
+                    onload: handleFilePondAdd
+                  }
+                }"
+                :files="recordFile"
+                @init="handleFilePondInit"
+              />
             </div>
 
             <div class="px-3 mb-6 md:mb-0">
@@ -93,7 +105,7 @@
                   :taggable="true"
                   @tag="addTag"
                 ></multiselect>
-                <pre class="language-json"><code>{{ record.tags  }}</code></pre>
+                <pre class="language-json"><code>{{ record.tags }}</code></pre>
               </div>
 
               <p class="text-red text-xs italic">The record will be available for search by this tags: #tag@search </p>
@@ -108,7 +120,7 @@
             bg-color="indigo-600"
             class="ml-1"
             :loading="creatingRecord"
-            @click="onUploadRecordClick"
+            @clicked="onUploadRecordClick"
           >
             Upload
           </simple-button>
@@ -130,26 +142,37 @@
 <script>
   import SimpleButton from "../../ui/SimpleButton";
   import Multiselect from 'vue-multiselect';
+
+  import vueFilePond from "vue-filepond";
+  import "filepond/dist/filepond.min.css";
+
   import axios from 'axios';
+
+  // Create component
+  const FilePond = vueFilePond();
 
   export default {
     name: "CreateRecordModal",
     components: {
       SimpleButton,
-      Multiselect
+      Multiselect,
+      FilePond
     },
     data() {
       return {
         isShown: false,
         record: {
           name: '',
-          file: null,
-          default_search_available: false,
+          path: '',
+          default_search_available: true,
           tags: []
         },
 
         /* Tags */
         tags: [],
+
+        /* FilePond */
+        recordFile: [],
 
         /* Creating Record */
         creatingRecord: false
@@ -185,6 +208,16 @@
           })
       },
 
+      /* FilePond */
+      handleFilePondInit () {
+        console.log("FilePond has initialized");
+        console.log(this.$refs.pond);
+      },
+      handleFilePondAdd (res) {
+        const response = JSON.parse(res);
+        this.record.path = response.path;
+      },
+
       /* Create Record */
       onUploadRecordClick() {
         if (this.creatingRecord) return;
@@ -202,21 +235,10 @@
           });
       },
       createRecord() {
-        const fd = new FormData();
-
-        Object.keys(this.record)
-          .forEach(key => {
-            if (typeof this.record[key] === 'object') {
-              fd.append(key, JSON.stringify(this.record[key]));
-            } else {
-              fd.append(key, this.record[key]);
-            }
-          });
-
-        fd.append('file', this.$refs.recordFile.files[0] || null);
-
         return axios.post('/internal/records', {
-          ...fd
+          ...this.record,
+          tags: this.record.tags.map(i=>i.uuid),
+          default_search_available: this.record.default_search_available ? 1 : 0
         })
       },
 

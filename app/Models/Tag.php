@@ -13,12 +13,6 @@ class Tag extends Model
         ExposesTableName,
         UsesPublicUuid;
 
-    protected $table = 'tags';
-
-    protected $fillable = [
-        'name'
-    ];
-
     /**
      * @return void
      */
@@ -30,6 +24,12 @@ class Tag extends Model
             }
         });
     }
+
+    protected $table = 'tags';
+
+    protected $fillable = [
+        'name'
+    ];
 
     public $timestamps = false;
 

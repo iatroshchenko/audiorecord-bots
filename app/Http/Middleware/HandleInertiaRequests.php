@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
 
             // Synchronously
             'appName' => config('app.name'),
+            'csrfToken' => csrf_token(),
 
             // Lazily
             'user' => function () use ($request) {
