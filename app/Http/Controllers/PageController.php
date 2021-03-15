@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RecordResource;
+use App\Models\Record;
 use App\Services\AdminService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class PageController extends Controller
 {
@@ -42,6 +45,28 @@ class PageController extends Controller
 
     public function records(Request $request)
     {
-        return Inertia::render('Records');
+        $defaultSort = '-created_at';
+
+        $records = QueryBuilder::for(Record::class)
+            ->with([
+                'tags'
+            ])
+            ->allowedSorts([
+                'name',
+                'default_search_available',
+                'created_at'
+            ])
+            ->defaultSort($defaultSort);
+
+        $paginated = $records
+            ->paginate($request->query('perPage') ?? 2);
+
+        $data = $paginated->toArray();
+        $data['data'] = RecordResource::collection($paginated);
+
+        return Inertia::render('Records', [
+            'paginated' => $data,
+            'sortBy' => $request->query('sort')
+        ]);
     }
 }

@@ -17,6 +17,7 @@ class CreateTagsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('name');
+            $table->string('color');
         });
     }
 

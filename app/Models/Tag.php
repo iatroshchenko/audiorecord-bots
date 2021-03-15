@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ColorService;
 use App\Traits\Model\{UsesPublicUuid, ExposesTableName};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,10 @@ class Tag extends Model
         static::creating(function ($model) {
             if (!$model->uuid) {
                 $model->uuid = (string) Str::uuid();
+            }
+
+            if (!$model->color) {
+                $model->color = ColorService::generateColor();
             }
         });
     }

@@ -52,6 +52,16 @@
               </label>
               <input v-model="record.name" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="record-name" type="text" placeholder="This is record name">
               <p class="text-red text-xs italic">The record will be available for search by this name.</p>
+
+              <div v-if="errors.name.length" class="errors">
+                <p
+                  class="text-red-600 text-xs italic"
+                  :key="key"
+                  v-for="(error, key) in errors.name"
+                >
+                  {{ error }}
+                </p>
+              </div>
             </div>
 
             <div class="px-3 mb-6 md:mb-0">
@@ -66,7 +76,7 @@
                 accepted-file-types="audio/ogg"
                 :allow-multiple="false"
                 :server="{
-                  url: $backendRoute('internal.record.upload'),
+                  url: $backendRoute('internal.records.upload'),
                   process: {
                     headers: {
                       'X-CSRF-TOKEN': $page.props.csrfToken,
@@ -78,6 +88,16 @@
                 :files="recordFile"
                 @init="handleFilePondInit"
               />
+
+              <div v-if="errors.path.length" class="errors">
+                <p
+                  class="text-red-600 text-xs italic"
+                  :key="key"
+                  v-for="(error, key) in errors.path"
+                >
+                  {{ error }}
+                </p>
+              </div>
             </div>
 
             <div class="px-3 mb-6 md:mb-0">
@@ -86,6 +106,17 @@
               </label>
               <input v-model="record.default_search_available" type="checkbox" id="record-default-search" placeholder="This is record name">
               <p class="text-red text-xs italic">Determine if record is available in default search</p>
+
+              <div v-if="errors.default_search_available.length" class="errors">
+                <p
+                  class="text-red-600 text-xs italic"
+                  :key="key"
+                  v-for="(error, key) in errors.default_search_available"
+                >
+                  {{ error }}
+                </p>
+              </div>
+
             </div>
 
             <div class="px-3 mb-6 md:mb-0">
@@ -109,6 +140,17 @@
               </div>
 
               <p class="text-red text-xs italic">The record will be available for search by this tags: #tag@search </p>
+
+              <div v-if="errors.tags.length" class="errors">
+                <p
+                  class="text-red-600 text-xs italic"
+                  :key="key"
+                  v-for="(error, key) in errors.tags"
+                >
+                  {{ error }}
+                </p>
+              </div>
+
             </div>
 
           </div>
@@ -168,6 +210,13 @@
           tags: []
         },
 
+        errors: {
+          name: [],
+          path: [],
+          default_search_available: [],
+          tags: []
+        },
+
         /* Tags */
         tags: [],
 
@@ -191,7 +240,14 @@
     },
     methods: {
       hide() {
+        this.clearErrors();
+        this.clearForm();
         this.$emit('hide');
+      },
+      done() {
+        this.clearErrors();
+        this.clearForm();
+        this.$emit('done');
       },
       addTag (newTag) {
         this.uploadTagFromInput(newTag)
@@ -208,6 +264,26 @@
           })
       },
 
+      /* CleanUp */
+      clearErrors() {
+        this.errors = {
+          name: [],
+          path: [],
+          default_search_available: [],
+          tags: []
+        };
+      },
+      clearForm() {
+        this.record = {
+          name: '',
+          path: '',
+          default_search_available: true,
+          tags: []
+        }
+
+        this.$refs.pond.removeFile();
+      },
+
       /* FilePond */
       handleFilePondInit () {
         console.log("FilePond has initialized");
@@ -222,13 +298,23 @@
       onUploadRecordClick() {
         if (this.creatingRecord) return;
         this.creatingRecord = true;
+        this.clearErrors();
 
         this.createRecord()
           .then(res => {
-            this.$emit('done');
+            this.done();
           })
           .catch(err => {
-            console.log(err);
+            const errors = err.response.data.errors;
+
+            Object.keys(this.errors).forEach(key => {
+              const e = errors[key];
+              if (e && e.length) {
+                e.forEach(error => {
+                  this.errors[key].push(error);
+                })
+              }
+            })
           })
           .finally(() => {
             this.creatingRecord = false;

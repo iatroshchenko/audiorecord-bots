@@ -8,6 +8,14 @@ use Illuminate\Http\JsonResponse;
 
 trait SendsEmptyResponse
 {
+    public function sendDataResponse($data): JsonResponse
+    {
+        return response()
+            ->json([
+                'data' => $data
+            ]);
+    }
+
     public function sendEmptyResponse(): JsonResponse
     {
         return response()

@@ -20,10 +20,27 @@
 
     <server-paginated-table
       :headers="headers"
-      :items="items"
+      :items="paginated.data.data"
       :sort-by="sortBy"
+      :loading="loading"
       @sort="onSort"
     >
+      <template v-slot:default_search_available="{ item }">
+        <div class="tags d-flex flex-wrap">
+          <pill
+            :color="item.default_search_available ? 'green-400' : 'red-400'"
+          >{{ item.default_search_available ? 'yes' : 'no' }}</pill>
+        </div>
+      </template>
+      <template v-slot:tags="{ item }">
+        <div class="tags d-flex flex-wrap">
+          <pill
+            v-for="(t, key) in item.tags"
+            :key="key"
+            :color="t.color"
+          >{{ t.name }}</pill>
+        </div>
+      </template>
       <template v-slot:actions="{ item }">
         <div class="flex item-center justify-center">
           <div
@@ -48,7 +65,11 @@
         </div>
       </template>
     </server-paginated-table>
-    <pagination-links></pagination-links>
+    <pagination-links
+      :last-page="paginated.last_page"
+      :current-page="paginated.current_page"
+      @page-selected="onPageSelected"
+    ></pagination-links>
   </div>
 </template>
 
@@ -57,7 +78,9 @@
   import ServerPaginatedTable from "../components/pagination/ServerPaginatedTable";
   import PaginationLinks from "../components/pagination/PaginationLinks";
   import SimpleButton from "../components/ui/SimpleButton";
+  import Pill from "../components/ui/Pill";
   import CreateRecordModal from "../components/pages/records/CreateRecordModal";
+  import { Inertia } from '@inertiajs/inertia'
 
   export default {
     name: "Records",
@@ -66,118 +89,61 @@
       ServerPaginatedTable,
       PaginationLinks,
       SimpleButton,
-      CreateRecordModal
+      CreateRecordModal,
+      Pill
+    },
+    props: {
+      paginated: {
+        type: Object
+      },
+      sortBy: {
+        type: String
+      }
     },
     data() {
       return {
+        /* Loading */
+        loading: false,
+
         /* Add Record */
         createRecordModalShown: false,
         /* Add Record */
 
         headers: [
           {
-            text: 'Dessert (100g serving)',
+            text: 'Name',
             value: 'name',
             class: 'py-3 px-6 text-left'
           },
-          { text: 'Calories', value: 'calories', class: 'py-3 px-6 text-left' },
-          { text: 'Fat (g)', value: 'fat', class: 'py-3 px-6 text-left' },
-          { text: 'Carbs (g)', value: 'carbs', class: 'py-3 px-6 text-center' },
-          { text: 'Protein (g)', value: 'protein', class: 'py-3 px-6 text-center' },
-          { text: 'Iron (%)', value: 'iron', class: 'py-3 px-6 text-center' },
-          { text: 'Actions', value: 'actions', class: 'py-3 px-6 text-right' }
-        ],
-        items: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
+            text: 'General Search',
+            value: 'default_search_available',
+            class: 'py-3 px-6 text-left'
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
+            text: 'Tags',
+            value: 'tags',
+            class: 'py-3 px-6 text-left',
+            sortable: false
           },
           {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
+            text: 'Created At',
+            value: 'created_at',
+            class: 'py-3 px-6 text-left'
           },
           {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
+            text: 'Actions',
+            value: 'actions',
+            class: 'py-3 px-6 text-right',
+            sortable: false
           }
         ],
-        sortBy: null
+        items: []
       }
     },
     methods: {
       edit(item) {
         alert(item.name);
-      },
-      onSort(field) {
-        this.sortBy = field;
       },
 
       /* Add Record */
@@ -192,13 +158,44 @@
       },
       onCreateRecordModalDone() {
         this.toggleCreateRecordModal(false);
-      }
+
+        Inertia.visit(this.$backendRoute('pages.records'), {
+          data: {
+            page: 1,
+            sort: null
+          }
+        });
+      },
       /* Add Record */
+
+      /* Pagination and Sorting */
+      onPageSelected(page) {
+        Inertia.visit(this.$backendRoute('pages.records'), {
+          data: {
+            page: page,
+            sort: this.sortBy
+          }
+        })
+      },
+      onSort(field) {
+        console.log(field);
+
+        Inertia.visit(this.$backendRoute('pages.records'), {
+          data: {
+            page: this.paginated.current_page,
+            sort: field
+          }
+        })
+      }
     }
   }
 </script>
 
 <style scoped>
+  .tags {
+    max-width: 320px;
+  }
+
   i.icon {
     font-size: 24px;
   }

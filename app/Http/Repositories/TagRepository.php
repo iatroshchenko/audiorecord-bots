@@ -28,4 +28,22 @@ class TagRepository
             'name' => $data['name']
         ]);
     }
+
+    public function getMultipleByUuid(array $uuids): Collection
+    {
+        return Tag::whereIn('uuid', $uuids)->get();
+    }
+
+    public function getByUuid(string $uuid): ?Tag
+    {
+        $tag = $this->findByUuid($uuid);
+        if (!$tag) throw new \DomainException('Tag not found with uuid: ' . $uuid);
+        return $tag;
+    }
+
+    public function findByUuid(string $uuid): ?Tag
+    {
+        $tag = Tag::whereUuid($uuid)->first();
+        return $tag;
+    }
 }

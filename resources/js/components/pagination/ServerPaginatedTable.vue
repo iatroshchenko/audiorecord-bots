@@ -1,7 +1,14 @@
 <template>
   <div
-    class="min-w-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
+    class="min-w-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
+  >
     <div class="w-full lg:w-5/6">
+
+      <table-loader
+        :color="'indigo-600'"
+        v-if="loading"
+      ></table-loader>
+
       <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-max w-full table-auto">
           <thead>
@@ -10,15 +17,18 @@
               v-for="(header, key) in headers"
               :key="key"
               :class="header.class"
-              @click="sort(header.value)"
+              @click="sort(header)"
               style="cursor:pointer;"
             >
               <span class="header-text">
                 {{ header.text }}
               </span>
-              <span class="header-icon">
-                <i v-if="sortBy === header.value" class='bx bx-sort-down' ></i>
-                <i v-else-if="sortBy === '-' + header.value" class='bx bx-sort-up' ></i>
+              <span
+                class="header-icon"
+                v-if="!(Object.keys(header).includes('sortable') && !header.sortable)"
+              >
+                <i v-if="sortBy === header.value" class='bx bx-sort-up' ></i>
+                <i v-else-if="sortBy === '-' + header.value" class='bx bx-sort-down' ></i>
                 <i v-else class='bx bx-sort-alt-2' ></i>
               </span>
             </th>
@@ -51,8 +61,13 @@
 </template>
 
 <script>
+  import TableLoader from "../ui/TableLoader";
+
   export default {
     name: "ServerPaginatedTable",
+    components: {
+      TableLoader
+    },
     props: {
       headers: {
         type: Array,
@@ -64,10 +79,18 @@
       },
       sortBy: {
         type: String
+      },
+      loading: {
+        type: Boolean
       }
     },
     methods: {
-      sort(field) {
+      sort(header) {
+        // by default every header is sortable
+        if (Object.keys(header).includes('sortable') && !header.sortable) return;
+
+        const field = header.value;
+
         let sortBy = this.sortBy;
 
         // 1. - if there's no current sort - just do -field and return.
