@@ -28,7 +28,7 @@
       <template v-slot:default_search_available="{ item }">
         <div class="tags d-flex flex-wrap">
           <pill
-            :color="item.default_search_available ? 'green-400' : 'red-400'"
+            :color="item.default_search_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
           >{{ item.default_search_available ? 'yes' : 'no' }}</pill>
         </div>
       </template>

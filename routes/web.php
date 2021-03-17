@@ -4,6 +4,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\Service\EmailVerificationController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TelegramController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -53,3 +54,19 @@ Route::get('email/verify', [EmailVerificationController::class, 'verifyEmail'])
 Route::get('records', [PageController::class, 'records'])
     ->name('pages.records')
     ->middleware('auth');
+
+Route::post('logout', [ PageController::class, 'logout' ])
+    ->name('pages.logout')
+    ->middleware('auth');
+
+/* Webhook */
+Route::get('webhook', [PageController::class, 'webhook'])
+    ->name('pages.webhook')
+    ->middleware(['auth', 'superadmin']);
+
+$apiKey = config('telegram.bot_api_key');
+if (!$apiKey) throw new DomainException('No API KEY set for bot');
+Route::post('webhook/token/' . $apiKey, [
+    TelegramController::class,
+    'webhook'
+]);

@@ -11,9 +11,12 @@ class ColorService
     {
         $faker = Factory::create();
 
-        $weights = [300, 400, 500];
         $colors = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
 
-        return $faker->randomElement($colors) . '-' . $faker->randomElement($weights);
+        $color = $faker->randomElement($colors);
+        $textWeight = 800;
+        $bgWeight = 100;
+
+        return 'text-' . $color . '-' . $textWeight . ' ' . 'bg-' . $color . '-' . $bgWeight;
     }
 }

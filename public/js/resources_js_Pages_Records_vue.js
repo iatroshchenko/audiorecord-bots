@@ -384,53 +384,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "DesktopMenu",
@@ -1509,7 +1462,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Pill",
   props: {
@@ -1639,7 +1591,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Layout",
+  name: "AppLayout",
   components: {
     Navbar: _components_navbar_Navbar__WEBPACK_IMPORTED_MODULE_0__.default
   }
@@ -1736,7 +1688,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.tag[data-v-5b0ac90e] {\n  font-size: 14px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.tag[data-v-5b0ac90e] {\n  font-size: 14px;\n  margin-bottom: 5px;\n  margin-right: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -16219,8 +16171,8 @@ var render = function() {
                       {
                         attrs: {
                           color: item.default_search_available
-                            ? "green-400"
-                            : "red-400"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }
                       },
                       [
@@ -16499,11 +16451,11 @@ var render = function() {
                                   },
                                   [
                                     _c(
-                                      "a",
+                                      "inertia-link",
                                       {
                                         staticClass:
                                           "-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50",
-                                        attrs: { href: "#" }
+                                        attrs: { href: "/records" }
                                       },
                                       [
                                         _c(
@@ -16563,71 +16515,74 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass:
-                                          "-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50",
-                                        attrs: { href: "#" }
-                                      },
-                                      [
-                                        _c(
-                                          "svg",
+                                    _vm.user.is_superadmin
+                                      ? _c(
+                                          "inertia-link",
                                           {
                                             staticClass:
-                                              "flex-shrink-0 h-6 w-6 text-indigo-600",
-                                            attrs: {
-                                              xmlns:
-                                                "http://www.w3.org/2000/svg",
-                                              fill: "none",
-                                              viewBox: "0 0 24 24",
-                                              stroke: "currentColor",
-                                              "aria-hidden": "true"
-                                            }
+                                              "-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50",
+                                            attrs: { href: "/webhook" }
                                           },
                                           [
-                                            _c("path", {
-                                              attrs: {
-                                                "stroke-linecap": "round",
-                                                "stroke-linejoin": "round",
-                                                "stroke-width": "2",
-                                                d:
-                                                  "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                                              }
-                                            })
+                                            _c(
+                                              "svg",
+                                              {
+                                                staticClass:
+                                                  "flex-shrink-0 h-6 w-6 text-indigo-600",
+                                                attrs: {
+                                                  xmlns:
+                                                    "http://www.w3.org/2000/svg",
+                                                  fill: "none",
+                                                  viewBox: "0 0 24 24",
+                                                  stroke: "currentColor",
+                                                  "aria-hidden": "true"
+                                                }
+                                              },
+                                              [
+                                                _c("path", {
+                                                  attrs: {
+                                                    "stroke-linecap": "round",
+                                                    "stroke-linejoin": "round",
+                                                    "stroke-width": "2",
+                                                    d:
+                                                      "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                                                  }
+                                                })
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", { staticClass: "ml-4" }, [
+                                              _c(
+                                                "p",
+                                                {
+                                                  staticClass:
+                                                    "text-base font-medium text-gray-900"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                        Webhook\n                      "
+                                                  )
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "p",
+                                                {
+                                                  staticClass:
+                                                    "mt-1 text-sm text-gray-500"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                        Manage Webhook info\n                      "
+                                                  )
+                                                ]
+                                              )
+                                            ])
                                           ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "ml-4" }, [
-                                          _c(
-                                            "p",
-                                            {
-                                              staticClass:
-                                                "text-base font-medium text-gray-900"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Users\n                      "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "p",
-                                            {
-                                              staticClass:
-                                                "mt-1 text-sm text-gray-500"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Manage Users and Permissions\n                      "
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ]
-                                    )
-                                  ]
+                                        )
+                                      : _vm._e()
+                                  ],
+                                  1
                                 ),
                                 _vm._v(" "),
                                 _vm.user.is_superadmin
@@ -16827,11 +16782,14 @@ var render = function() {
                                   },
                                   [
                                     _c(
-                                      "a",
+                                      "inertia-link",
                                       {
                                         staticClass:
                                           "-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50",
-                                        attrs: { href: "#" }
+                                        attrs: {
+                                          href: "/logout",
+                                          method: "post"
+                                        }
                                       },
                                       [
                                         _c(
@@ -16870,7 +16828,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                        Records\n                      "
+                                                "\n                        Logout\n                      "
                                               )
                                             ]
                                           ),
@@ -16883,205 +16841,16 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                        Manage Records\n                      "
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass:
-                                          "-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50",
-                                        attrs: { href: "#" }
-                                      },
-                                      [
-                                        _c(
-                                          "svg",
-                                          {
-                                            staticClass:
-                                              "flex-shrink-0 h-6 w-6 text-indigo-600",
-                                            attrs: {
-                                              xmlns:
-                                                "http://www.w3.org/2000/svg",
-                                              fill: "none",
-                                              viewBox: "0 0 24 24",
-                                              stroke: "currentColor",
-                                              "aria-hidden": "true"
-                                            }
-                                          },
-                                          [
-                                            _c("path", {
-                                              attrs: {
-                                                "stroke-linecap": "round",
-                                                "stroke-linejoin": "round",
-                                                "stroke-width": "2",
-                                                d:
-                                                  "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                                              }
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "ml-4" }, [
-                                          _c(
-                                            "p",
-                                            {
-                                              staticClass:
-                                                "text-base font-medium text-gray-900"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Users\n                      "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "p",
-                                            {
-                                              staticClass:
-                                                "mt-1 text-sm text-gray-500"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                        Manage Users and Permissions\n                      "
+                                                "\n                        Leave the site\n                      "
                                               )
                                             ]
                                           )
                                         ])
                                       ]
                                     )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm.user.is_superadmin
-                                  ? _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "flow-root" },
-                                          [
-                                            _c(
-                                              "a",
-                                              {
-                                                staticClass:
-                                                  "-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100",
-                                                attrs: { href: "#" }
-                                              },
-                                              [
-                                                _c(
-                                                  "svg",
-                                                  {
-                                                    staticClass:
-                                                      "flex-shrink-0 h-6 w-6 text-gray-400",
-                                                    attrs: {
-                                                      xmlns:
-                                                        "http://www.w3.org/2000/svg",
-                                                      fill: "none",
-                                                      viewBox: "0 0 24 24",
-                                                      stroke: "currentColor",
-                                                      "aria-hidden": "true"
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("path", {
-                                                      attrs: {
-                                                        "stroke-linecap":
-                                                          "round",
-                                                        "stroke-linejoin":
-                                                          "round",
-                                                        "stroke-width": "2",
-                                                        d:
-                                                          "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    _c("path", {
-                                                      attrs: {
-                                                        "stroke-linecap":
-                                                          "round",
-                                                        "stroke-linejoin":
-                                                          "round",
-                                                        "stroke-width": "2",
-                                                        d:
-                                                          "M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                      }
-                                                    })
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "span",
-                                                  { staticClass: "ml-3" },
-                                                  [_vm._v("Watch Demo")]
-                                                )
-                                              ]
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "div",
-                                          { staticClass: "flow-root" },
-                                          [
-                                            _c(
-                                              "a",
-                                              {
-                                                staticClass:
-                                                  "-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100",
-                                                attrs: { href: "#" }
-                                              },
-                                              [
-                                                _c(
-                                                  "svg",
-                                                  {
-                                                    staticClass:
-                                                      "flex-shrink-0 h-6 w-6 text-gray-400",
-                                                    attrs: {
-                                                      xmlns:
-                                                        "http://www.w3.org/2000/svg",
-                                                      fill: "none",
-                                                      viewBox: "0 0 24 24",
-                                                      stroke: "currentColor",
-                                                      "aria-hidden": "true"
-                                                    }
-                                                  },
-                                                  [
-                                                    _c("path", {
-                                                      attrs: {
-                                                        "stroke-linecap":
-                                                          "round",
-                                                        "stroke-linejoin":
-                                                          "round",
-                                                        "stroke-width": "2",
-                                                        d:
-                                                          "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                                                      }
-                                                    })
-                                                  ]
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "span",
-                                                  { staticClass: "ml-3" },
-                                                  [_vm._v("Contact Sales")]
-                                                )
-                                              ]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  : _vm._e()
+                                  ],
+                                  1
+                                )
                               ]
                             )
                           ]
@@ -18539,8 +18308,8 @@ var render = function() {
     "div",
     {
       staticClass:
-        "tag py-2 px-4 rounded-full text-white text-center font-extrabold mr-1 mb-1",
-      class: _vm.color ? "bg-" + _vm.color : ""
+        "tag inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+      class: _vm.color ? _vm.color : ""
     },
     [_vm._t("default")],
     2

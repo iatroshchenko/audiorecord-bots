@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\ExternalServices\TelegramService;
+use Longman\TelegramBot\Request as TelegramBotRequest;
+
 use App\Http\Resources\RecordResource;
 use App\Models\Record;
 use App\Services\AdminService;
@@ -12,10 +15,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 class PageController extends Controller
 {
     private AdminService $adminService;
+    private TelegramService $telegramService;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(
+        AdminService $adminService,
+        TelegramService $telegramService
+    )
     {
         $this->adminService = $adminService;
+        $this->telegramService = $telegramService;
     }
 
     public function index(Request $request)
@@ -43,6 +51,12 @@ class PageController extends Controller
         return Inertia::render('Start');
     }
 
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        return redirect('/');
+    }
+
     public function records(Request $request)
     {
         $defaultSort = '-created_at';
@@ -68,5 +82,10 @@ class PageController extends Controller
             'paginated' => $data,
             'sortBy' => $request->query('sort')
         ]);
+    }
+
+    public function webhook(Request $request)
+    {
+        return Inertia::render('Settings/Webhook');
     }
 }

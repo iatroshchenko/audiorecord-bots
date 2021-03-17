@@ -1,7 +1,6 @@
 <template>
-  <div
-    class="tag py-2 px-4 rounded-full text-white text-center font-extrabold mr-1 mb-1"
-    :class="color ? 'bg-' + color : ''"
+  <div class="tag inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+     :class="color ? color : ''"
   >
     <slot/>
   </div>
@@ -21,5 +20,7 @@
 <style scoped>
   .tag {
     font-size: 14px;
+    margin-bottom: 5px;
+    margin-right: 5px;
   }
 </style>

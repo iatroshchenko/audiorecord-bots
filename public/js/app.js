@@ -50831,6 +50831,14 @@ var map = {
 		"./resources/js/Pages/Records.vue",
 		"resources_js_Pages_Records_vue"
 	],
+	"./Settings/Webhook": [
+		"./resources/js/Pages/Settings/Webhook.vue",
+		"resources_js_Pages_Settings_Webhook_vue"
+	],
+	"./Settings/Webhook.vue": [
+		"./resources/js/Pages/Settings/Webhook.vue",
+		"resources_js_Pages_Settings_Webhook_vue"
+	],
 	"./Start": [
 		"./resources/js/Pages/Start.vue",
 		"resources_js_Pages_Start_vue"
@@ -50945,7 +50953,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Home_vue":"f1016b58f62b3f9d8c7d","resources_js_Pages_Login_vue":"5014b79e4a8acdcd8205","resources_js_Pages_Records_vue":"9de6481df9689774558d","resources_js_Pages_Start_vue":"e32237ed8a1124bb69b5","resources_js_Pages_VerifyEmail_vue":"9d9e909a9e0e4cf4a8ee"}[chunkId] + "";
+/******/ 			return "js/" + chunkId + ".js?id=" + {"resources_js_Pages_Home_vue":"b4c3af4071d5c13b5f66","resources_js_Pages_Login_vue":"5014b79e4a8acdcd8205","resources_js_Pages_Records_vue":"dba6bfdef4f51962cfb2","resources_js_Pages_Settings_Webhook_vue":"174f4589bcad6456bb01","resources_js_Pages_Start_vue":"e32237ed8a1124bb69b5","resources_js_Pages_VerifyEmail_vue":"326c20b9bd7d8807d9b3"}[chunkId] + "";
 /******/ 		};
 /******/ 	})();
 /******/ 	

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Internal\{TagController, RecordController};
 use App\Http\Controllers\Internal\UploadController;
+use App\Http\Controllers\TelegramController;
 
 /* Tags */
 Route::get('tags', [ TagController::class, 'all' ])->middleware('auth');
@@ -19,3 +20,17 @@ Route::post('records', [ RecordController::class, 'create' ])
     ->middleware('auth');
 /* Records */
 
+/* Webhook */
+Route::get('webhook-info', [
+    TelegramController::class,
+    'getWebhookInfo'
+])
+    ->name('webhook.info')
+    ->middleware(['auth', 'superadmin']);
+
+Route::post('webhook/set', [
+    TelegramController::class,
+    'setWebhook'
+])
+    ->name('webhook.set')
+    ->middleware(['auth', 'superadmin']);
