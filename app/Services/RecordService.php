@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Http\Repositories\RecordRepository;
 use App\Http\Repositories\TagRepository;
 use App\Http\Requests\Internal\Record\CreateRecordRequest;
+use App\Http\Requests\Internal\Record\DeleteRecordRequest;
 use App\Models\Record;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class RecordService
 {
@@ -37,5 +39,25 @@ class RecordService
         }
 
         return $record;
+    }
+
+    public function deleteRecordFromRequest(DeleteRecordRequest $request): bool
+    {
+        DB::beginTransaction();
+
+        try {
+            $record = $this->records->getByUuid($request->input('record_uuid'));
+            $record->delete();
+
+            $deleted = Storage::delete($record->getPathToDelete());
+            if (!$deleted)  new \Exception('File not found on disk ' . $record->getPathToDelete());
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            throw new \Exception($exception->getMessage());
+        }
+
+        return true;
     }
 }

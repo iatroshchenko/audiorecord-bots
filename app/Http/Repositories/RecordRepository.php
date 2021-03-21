@@ -37,4 +37,12 @@ class RecordRepository
 
         return $record;
     }
+
+    public function getByUuid(string $uuid): Record
+    {
+        $record = Record::whereUuid($uuid)->first();
+        if (!$record) throw new \DomainException('Record not found by uuid ' . $uuid);
+
+        return $record;
+    }
 }

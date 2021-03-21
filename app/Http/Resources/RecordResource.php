@@ -19,7 +19,7 @@ class RecordResource extends JsonResource
             'name' => $this->name,
             'url' => $this->url(),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
-            'default_search_available' => $this->default_search_available,
+            'default_search_available' => $this->default_search_available ? 1 : 0,
             'created_at' => $this->created_at
         ];
     }

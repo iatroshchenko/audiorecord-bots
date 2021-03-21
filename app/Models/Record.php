@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Storage;
 use App\Traits\Model\{UsesPublicUuid, ExposesTableName};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,15 @@ class Record extends Model
         }
 
         return url('storage/' . $this->path);
+    }
+
+    public function getPathToDelete()
+    {
+        if ($this->is_remote) {
+            return $this->path;
+        }
+
+        return Storage::path('app/' . $this->path);
     }
 
     public function tags()

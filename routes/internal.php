@@ -18,6 +18,10 @@ Route::post('records/upload', [ UploadController::class, 'uploadRecord' ])
 Route::post('records', [ RecordController::class, 'create' ])
     ->name('internal.records.store')
     ->middleware('auth');
+
+Route::post('records/{record:uuid}/delete', [ RecordController::class, 'delete' ] )
+    ->name('internal.records.delete')
+    ->middleware(['auth', 'superadmin']);
 /* Records */
 
 /* Webhook */

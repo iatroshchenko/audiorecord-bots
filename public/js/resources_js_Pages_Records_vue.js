@@ -18,6 +18,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ui_Pill__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/ui/Pill */ "./resources/js/components/ui/Pill.vue");
 /* harmony import */ var _components_pages_records_CreateRecordModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/pages/records/CreateRecordModal */ "./resources/js/components/pages/records/CreateRecordModal.vue");
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
 //
 //
 //
@@ -93,6 +95,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -156,6 +161,22 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     edit: function edit(item) {
       alert(item.name);
+    },
+    deleteRecord: function deleteRecord(item) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_7___default().post(this.$backendRoute('internal.records.delete', {
+        record: item.uuid
+      })).then(function (res) {
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.visit(_this.$backendRoute('pages.records'), {
+          data: {
+            page: _this.paginated.current_page,
+            sort: null
+          }
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
     },
 
     /* Add Record */
@@ -16293,7 +16314,12 @@ var render = function() {
                     "div",
                     {
                       staticClass:
-                        "w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                        "w-4 mr-2 transform hover:text-purple-500 hover:scale-110",
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteRecord(item)
+                        }
+                      }
                     },
                     [
                       _c(

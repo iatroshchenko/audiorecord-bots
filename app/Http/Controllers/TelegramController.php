@@ -38,8 +38,24 @@ class TelegramController extends Controller
         }
 
         /* Results */
-        $results = Record::where('name', 'like', '%' . $query . '%')
-            ->where('default_search_available', 1)
+        $queryWithTag = explode('#', $query);
+        if (isset($queryWithTag[1])) {
+            $tag = $queryWithTag[0];
+            $query = $queryWithTag[1];
+
+            $recordQuery = Record::with([
+                'tags'
+            ])
+                ->whereHas('tags', function ($q) use ($tag) {
+                    $q->where('name', $tag);
+                })
+                ->where('name', 'like', '%' . $query . '%');
+        } else {
+            $recordQuery = Record::where('name', 'like', '%' . $query . '%')
+                ->where('default_search_available', 1);
+        }
+
+        $results = $recordQuery
             ->limit(50)
             ->get();
 
