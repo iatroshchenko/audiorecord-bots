@@ -42,7 +42,7 @@ class Record extends Model
             return '';
         }
 
-        return url('storage/' . $this->path);
+        return url('storage/' . $this->path, [], true);
     }
 
     public function getPathToDelete()
