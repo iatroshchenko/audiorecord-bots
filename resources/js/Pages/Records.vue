@@ -6,6 +6,12 @@
       @done="onCreateRecordModalDone"
     ></create-record-modal>
 
+    <bulk-create-record-modal
+      :show="bulkCreateRecordModalShown"
+      @hide="onBulkCreateRecordModalHide"
+      @done="onBulkCreateRecordModalDone"
+    ></bulk-create-record-modal>
+
     <div class="rounded-t-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 p-10">
       <div class="text-right">
         <simple-button
@@ -14,6 +20,15 @@
           @clicked="onAddRecordButtonClick"
         >
           Add Record <i class='ml-1 icon bx bx-user-voice'></i>
+        </simple-button>
+      </div>
+      <div class="text-right">
+        <simple-button
+          hover-bg-color="yellow-700"
+          bg-color="yellow-600"
+          @clicked="onBulkAddRecordButtonClick"
+        >
+          Bulk Add Record <i class='ml-1 icon bx bx-user-voice'></i>
         </simple-button>
       </div>
     </div>
@@ -82,6 +97,7 @@
   import SimpleButton from "../components/ui/SimpleButton";
   import Pill from "../components/ui/Pill";
   import CreateRecordModal from "../components/pages/records/CreateRecordModal";
+  import BulkCreateRecordModal from "../components/pages/records/BulkCreateRecordModal";
   import { Inertia } from '@inertiajs/inertia';
   import axios from 'axios';
 
@@ -93,6 +109,7 @@
       PaginationLinks,
       SimpleButton,
       CreateRecordModal,
+      BulkCreateRecordModal,
       Pill
     },
     props: {
@@ -110,6 +127,7 @@
 
         /* Add Record */
         createRecordModalShown: false,
+        bulkCreateRecordModalShown: false,
         /* Add Record */
 
         headers: [
@@ -186,6 +204,28 @@
         });
       },
       /* Add Record */
+
+      /* Bulk Add Record */
+      toggleBulkCreateRecordModal(val) {
+        this.bulkCreateRecordModalShown = !!val;
+      },
+      onBulkAddRecordButtonClick() {
+        this.toggleBulkCreateRecordModal(true);
+      },
+      onBulkCreateRecordModalHide() {
+        this.toggleBulkCreateRecordModal(false);
+      },
+      onBulkCreateRecordModalDone() {
+        this.toggleBulkCreateRecordModal(false);
+
+        Inertia.visit(this.$backendRoute('pages.records'), {
+          data: {
+            page: 1,
+            sort: null
+          }
+        });
+      },
+      /* Bulk Add Record */
 
       /* Pagination and Sorting */
       onPageSelected(page) {

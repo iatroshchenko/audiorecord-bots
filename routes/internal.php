@@ -19,6 +19,10 @@ Route::post('records', [ RecordController::class, 'create' ])
     ->name('internal.records.store')
     ->middleware('auth');
 
+Route::post('records-bulk', [ RecordController::class, 'bulkCreate' ])
+    ->name('internal.records.store-bulk')
+    ->middleware('auth');
+
 Route::post('records/{record:uuid}/delete', [ RecordController::class, 'delete' ] )
     ->name('internal.records.delete')
     ->middleware(['auth', 'superadmin']);

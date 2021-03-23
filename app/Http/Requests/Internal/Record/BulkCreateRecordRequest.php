@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
-class CreateRecordRequest extends FormRequest
+class BulkCreateRecordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +26,23 @@ class CreateRecordRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'records' => [
                 'required',
+                'array'
+            ],
+            'records.*.name' => [
+                'required',
+                'distinct',
                 Rule::unique('records', 'name'),
                 'string',
                 'min:5',
                 'max:120'
             ],
-            'default_search_available' => [
+            'records.*.default_search_available' => [
                 'nullable',
                 'boolean'
             ],
-            'path' => [
+            'records.*.path' => [
                 'required',
                 'string',
                 function ($attr, $value, $fail) {
@@ -48,11 +53,11 @@ class CreateRecordRequest extends FormRequest
                     }
                 }
             ],
-            'tags' => [
+            'records.*.tags' => [
                 'nullable',
                 'array'
             ],
-            'tags.*' => [
+            'records.*.tags.*' => [
                 'exists:tags,uuid',
                 'distinct'
             ]

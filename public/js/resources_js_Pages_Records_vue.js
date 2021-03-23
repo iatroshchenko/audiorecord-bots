@@ -17,9 +17,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ui_SimpleButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/ui/SimpleButton */ "./resources/js/components/ui/SimpleButton.vue");
 /* harmony import */ var _components_ui_Pill__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/ui/Pill */ "./resources/js/components/ui/Pill.vue");
 /* harmony import */ var _components_pages_records_CreateRecordModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/pages/records/CreateRecordModal */ "./resources/js/components/pages/records/CreateRecordModal.vue");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_pages_records_BulkCreateRecordModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/pages/records/BulkCreateRecordModal */ "./resources/js/components/pages/records/BulkCreateRecordModal.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
 //
 //
 //
@@ -97,6 +98,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -113,6 +130,7 @@ __webpack_require__.r(__webpack_exports__);
     PaginationLinks: _components_pagination_PaginationLinks__WEBPACK_IMPORTED_MODULE_2__.default,
     SimpleButton: _components_ui_SimpleButton__WEBPACK_IMPORTED_MODULE_3__.default,
     CreateRecordModal: _components_pages_records_CreateRecordModal__WEBPACK_IMPORTED_MODULE_5__.default,
+    BulkCreateRecordModal: _components_pages_records_BulkCreateRecordModal__WEBPACK_IMPORTED_MODULE_6__.default,
     Pill: _components_ui_Pill__WEBPACK_IMPORTED_MODULE_4__.default
   },
   props: {
@@ -130,6 +148,7 @@ __webpack_require__.r(__webpack_exports__);
 
       /* Add Record */
       createRecordModalShown: false,
+      bulkCreateRecordModalShown: false,
 
       /* Add Record */
       headers: [{
@@ -165,10 +184,10 @@ __webpack_require__.r(__webpack_exports__);
     deleteRecord: function deleteRecord(item) {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_7___default().post(this.$backendRoute('internal.records.delete', {
+      axios__WEBPACK_IMPORTED_MODULE_8___default().post(this.$backendRoute('internal.records.delete', {
         record: item.uuid
       })).then(function (res) {
-        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.visit(_this.$backendRoute('pages.records'), {
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.visit(_this.$backendRoute('pages.records'), {
           data: {
             page: _this.paginated.current_page,
             sort: null
@@ -191,7 +210,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onCreateRecordModalDone: function onCreateRecordModalDone() {
       this.toggleCreateRecordModal(false);
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.visit(this.$backendRoute('pages.records'), {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.visit(this.$backendRoute('pages.records'), {
         data: {
           page: 1,
           sort: null
@@ -201,9 +220,31 @@ __webpack_require__.r(__webpack_exports__);
 
     /* Add Record */
 
+    /* Bulk Add Record */
+    toggleBulkCreateRecordModal: function toggleBulkCreateRecordModal(val) {
+      this.bulkCreateRecordModalShown = !!val;
+    },
+    onBulkAddRecordButtonClick: function onBulkAddRecordButtonClick() {
+      this.toggleBulkCreateRecordModal(true);
+    },
+    onBulkCreateRecordModalHide: function onBulkCreateRecordModalHide() {
+      this.toggleBulkCreateRecordModal(false);
+    },
+    onBulkCreateRecordModalDone: function onBulkCreateRecordModalDone() {
+      this.toggleBulkCreateRecordModal(false);
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.visit(this.$backendRoute('pages.records'), {
+        data: {
+          page: 1,
+          sort: null
+        }
+      });
+    },
+
+    /* Bulk Add Record */
+
     /* Pagination and Sorting */
     onPageSelected: function onPageSelected(page) {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.visit(this.$backendRoute('pages.records'), {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.visit(this.$backendRoute('pages.records'), {
         data: {
           page: page,
           sort: this.sortBy
@@ -212,7 +253,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onSort: function onSort(field) {
       console.log(field);
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_6__.Inertia.visit(this.$backendRoute('pages.records'), {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__.Inertia.visit(this.$backendRoute('pages.records'), {
         data: {
           page: this.paginated.current_page,
           sort: field
@@ -774,6 +815,507 @@ __webpack_require__.r(__webpack_exports__);
     onMobileMenuOpen: function onMobileMenuOpen() {
       this.toggleMobileMenu(true);
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ui_SimpleButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../ui/SimpleButton */ "./resources/js/components/ui/SimpleButton.vue");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-filepond */ "./node_modules/vue-filepond/dist/vue-filepond.js");
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_filepond__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var filepond_dist_filepond_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! filepond/dist/filepond.min.css */ "./node_modules/filepond/dist/filepond.min.css");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+ // Create component
+
+var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "BulkCreateRecordModal",
+  components: {
+    SimpleButton: _ui_SimpleButton__WEBPACK_IMPORTED_MODULE_0__.default,
+    Multiselect: (vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default()),
+    FilePond: FilePond
+  },
+  data: function data() {
+    return {
+      isShown: false,
+      files: [],
+      errors: [],
+
+      /* Tags */
+      tags: [],
+      bulkTags: [],
+      bulkDefaultSearchAvailable: true,
+
+      /* FilePond */
+      recordFile: [],
+
+      /* Bulk Record Creating */
+      bulkRecordCreating: false
+    };
+  },
+  props: {
+    show: {
+      type: Boolean,
+      required: true
+    }
+  },
+  watch: {
+    show: function show(val) {
+      this.isShown = !!val;
+    },
+    bulkDefaultSearchAvailable: function bulkDefaultSearchAvailable(val) {
+      this.files.forEach(function (file) {
+        file.default_search_available = val ? 1 : 0;
+      });
+    },
+    bulkTags: function bulkTags(val) {
+      this.files.forEach(function (file) {
+        file.tags = _toConsumableArray(val);
+      });
+    }
+  },
+  methods: {
+    hide: function hide() {
+      this.clearErrors();
+      this.clearForm();
+      this.$emit('hide');
+    },
+    done: function done() {
+      this.clearErrors();
+      this.clearForm();
+      this.$emit('done');
+    },
+    addTag: function addTag(newTag) {
+      var _this = this;
+
+      var record = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var directObject = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      this.uploadTagFromInput(newTag).then(function (res) {
+        var tag = _objectSpread({}, res.data.data);
+
+        _this.loadTags().then(function (res) {
+          if (record) record.tags.push(tag);
+          if (directObject) directObject.push(tag);
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /* CleanUp */
+    clearErrors: function clearErrors() {
+      var _this2 = this;
+
+      this.errors = [];
+      this.files.forEach(function (file) {
+        _this2.errors.push({
+          name: [],
+          path: [],
+          default_search_available: [],
+          tags: []
+        });
+      });
+    },
+    clearForm: function clearForm() {
+      this.files = [];
+      this.$refs.pond.removeFiles();
+    },
+
+    /* FilePond */
+    handleFilePondInit: function handleFilePondInit() {
+      console.log("FilePond has initialized");
+      console.log(this.$refs.pond);
+      this.$refs.pond.getFiles();
+    },
+    handleFilePondAdd: function handleFilePondAdd(res) {
+      var _this3 = this;
+
+      var response = JSON.parse(res);
+      setTimeout(function () {
+        _this3.syncFiles();
+      }, 100);
+      return response.path;
+    },
+    handleFilePondError: function handleFilePondError(err) {
+      var _this4 = this;
+
+      setTimeout(function () {
+        _this4.syncFiles();
+      }, 100);
+      return err;
+    },
+    handleFilePondRemove: function handleFilePondRemove(error, file) {
+      var index = this.files.findIndex(function (i) {
+        return i.id === file.id;
+      });
+      this.files = this.files.filter(function (i) {
+        return i.id !== file.id;
+      });
+      this.errors = this.errors.filter(function (item, i) {
+        return i !== index;
+      });
+    },
+
+    /* Multiple file upload */
+    syncFiles: function syncFiles() {
+      var _this5 = this;
+
+      var filePondFiles = this.$refs.pond.getFiles();
+      filePondFiles.forEach(function (fpFile) {
+        var existingFile = _this5.files.find(function (file) {
+          return file.id === fpFile.id;
+        });
+
+        if (!existingFile) {
+          _this5.files.push({
+            id: fpFile.id,
+            name: fpFile.file.name,
+            path: fpFile.serverId,
+            default_search_available: true,
+            tags: []
+          });
+        } else {
+          if (!existingFile.path && fpFile.serverId) {
+            existingFile.path = fpFile.serverId;
+          }
+        }
+      });
+    },
+
+    /* Multiple file upload */
+
+    /* Bulk Record Create */
+    onUploadRecordClick: function onUploadRecordClick() {
+      var _this6 = this;
+
+      if (this.bulkRecordCreating) return;
+      this.bulkRecordCreating = true;
+      this.clearErrors();
+      this.bulkCreateRecords().then(function (res) {
+        _this6.done();
+      })["catch"](function (err) {
+        var errors = err.response.data.errors;
+        Object.keys(_this6.errors).forEach(function (key) {
+          var certainError = _this6.errors[key];
+          Object.keys(certainError).forEach(function (field) {
+            // sample error key: records.0.path
+            if (errors["records.".concat(key, ".").concat(field)]) {
+              errors["records.".concat(key, ".").concat(field)].forEach(function (e) {
+                certainError[field].push(e);
+              });
+            }
+          });
+        });
+      })["finally"](function () {
+        _this6.bulkRecordCreating = false;
+      });
+    },
+    bulkCreateRecords: function bulkCreateRecords() {
+      return axios__WEBPACK_IMPORTED_MODULE_4___default().post('/internal/records-bulk', {
+        records: this.files.map(function (record) {
+          return _objectSpread(_objectSpread({}, record), {}, {
+            tags: record.tags.map(function (i) {
+              return i.uuid;
+            }),
+            default_search_available: record.default_search_available ? 1 : 0
+          });
+        })
+      });
+    },
+
+    /* Upload */
+    uploadTagFromInput: function uploadTagFromInput(name) {
+      return axios__WEBPACK_IMPORTED_MODULE_4___default().post('/internal/tags', {
+        name: name
+      });
+    },
+
+    /* Load */
+    loadTags: function loadTags() {
+      var _this7 = this;
+
+      return axios__WEBPACK_IMPORTED_MODULE_4___default().get('/internal/tags').then(function (res) {
+        _this7.tags = _toConsumableArray(res.data.data);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadTags();
   }
 });
 
@@ -15264,6 +15806,45 @@ component.options.__file = "resources/js/components/navbar/Navbar.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/pages/records/BulkCreateRecordModal.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/pages/records/BulkCreateRecordModal.vue ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true& */ "./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true&");
+/* harmony import */ var _BulkCreateRecordModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BulkCreateRecordModal.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _BulkCreateRecordModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "64bab71b",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pages/records/BulkCreateRecordModal.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/pages/records/CreateRecordModal.vue":
 /*!*********************************************************************!*\
   !*** ./resources/js/components/pages/records/CreateRecordModal.vue ***!
@@ -15680,6 +16261,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkCreateRecordModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BulkCreateRecordModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkCreateRecordModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/pages/records/CreateRecordModal.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/components/pages/records/CreateRecordModal.vue?vue&type=script&lang=js& ***!
@@ -15975,6 +16572,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true& ***!
+  \********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BulkCreateRecordModal_vue_vue_type_template_id_64bab71b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/pages/records/CreateRecordModal.vue?vue&type=template&id=0c345b8d&scoped=true&":
 /*!****************************************************************************************************************!*\
   !*** ./resources/js/components/pages/records/CreateRecordModal.vue?vue&type=template&id=0c345b8d&scoped=true& ***!
@@ -16138,6 +16752,14 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("bulk-create-record-modal", {
+        attrs: { show: _vm.bulkCreateRecordModalShown },
+        on: {
+          hide: _vm.onBulkCreateRecordModalHide,
+          done: _vm.onBulkCreateRecordModalDone
+        }
+      }),
+      _vm._v(" "),
       _c(
         "div",
         {
@@ -16160,6 +16782,28 @@ var render = function() {
                 },
                 [
                   _vm._v("\n        Add Record "),
+                  _c("i", { staticClass: "ml-1 icon bx bx-user-voice" })
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "text-right" },
+            [
+              _c(
+                "simple-button",
+                {
+                  attrs: {
+                    "hover-bg-color": "yellow-700",
+                    "bg-color": "yellow-600"
+                  },
+                  on: { clicked: _vm.onBulkAddRecordButtonClick }
+                },
+                [
+                  _vm._v("\n        Bulk Add Record "),
                   _c("i", { staticClass: "ml-1 icon bx bx-user-voice" })
                 ]
               )
@@ -17564,6 +18208,741 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/pages/records/BulkCreateRecordModal.vue?vue&type=template&id=64bab71b&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.isShown,
+          expression: "isShown"
+        }
+      ],
+      staticClass: "fixed z-10 inset-0 overflow-y-auto"
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass: "hidden sm:inline-block sm:align-middle sm:h-screen",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_vm._v("​")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all lg:max-w-5xl sm:align-middle sm:max-w-xl md:max-w-2xl sm:w-full",
+              attrs: {
+                role: "dialog",
+                "aria-modal": "true",
+                "aria-labelledby": "modal-headline"
+              }
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "-mx-3 mb-6" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "px-3 mb-10" },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                            },
+                            [_vm._v("\n              .ogg Files\n            ")]
+                          ),
+                          _vm._v(" "),
+                          _c("file-pond", {
+                            ref: "pond",
+                            attrs: {
+                              name: "file",
+                              "label-idle": "Upload the .ogg record file",
+                              "accepted-file-types": "audio/ogg",
+                              "allow-multiple": true,
+                              server: {
+                                url: _vm.$backendRoute(
+                                  "internal.records.upload"
+                                ),
+                                process: {
+                                  headers: {
+                                    "X-CSRF-TOKEN": _vm.$page.props.csrfToken,
+                                    accept: "application/json"
+                                  },
+                                  onload: _vm.handleFilePondAdd,
+                                  onerror: _vm.handleFilePondError
+                                }
+                              }
+                            },
+                            on: {
+                              init: _vm.handleFilePondInit,
+                              removefile: _vm.handleFilePondRemove
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.files.length
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "p-3 mb-10 border-solid border-2 border-indigo-200"
+                            },
+                            [
+                              _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                    attrs: {
+                                      for: "bulk-default-search-available"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Bulk Default Search available\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.bulkDefaultSearchAvailable,
+                                      expression: "bulkDefaultSearchAvailable"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "checkbox",
+                                    id: "bulk-default-search-available"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(
+                                      _vm.bulkDefaultSearchAvailable
+                                    )
+                                      ? _vm._i(
+                                          _vm.bulkDefaultSearchAvailable,
+                                          null
+                                        ) > -1
+                                      : _vm.bulkDefaultSearchAvailable
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = _vm.bulkDefaultSearchAvailable,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            (_vm.bulkDefaultSearchAvailable = $$a.concat(
+                                              [$$v]
+                                            ))
+                                        } else {
+                                          $$i > -1 &&
+                                            (_vm.bulkDefaultSearchAvailable = $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1)))
+                                        }
+                                      } else {
+                                        _vm.bulkDefaultSearchAvailable = $$c
+                                      }
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  { staticClass: "text-red text-xs italic" },
+                                  [
+                                    _vm._v(
+                                      "Determine if record is certain record is available in default search - for all records"
+                                    )
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Bulk Tags\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c("multiselect", {
+                                      attrs: {
+                                        "tag-placeholder":
+                                          "Add this as new tag",
+                                        placeholder: "Search or add a tag",
+                                        label: "name",
+                                        "track-by": "uuid",
+                                        options: _vm.tags,
+                                        multiple: true,
+                                        taggable: true
+                                      },
+                                      on: {
+                                        tag: function(tag) {
+                                          _vm.addTag(tag, null, _vm.bulkTags)
+                                        }
+                                      },
+                                      model: {
+                                        value: _vm.bulkTags,
+                                        callback: function($$v) {
+                                          _vm.bulkTags = $$v
+                                        },
+                                        expression: "bulkTags"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "pre",
+                                      { staticClass: "language-json" },
+                                      [
+                                        _c("code", [
+                                          _vm._v(_vm._s(_vm.bulkTags))
+                                        ])
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  { staticClass: "text-red text-xs italic" },
+                                  [
+                                    _vm._v(
+                                      "A certain record will be available for search by this pattern: tag#search (for all records) "
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(_vm.files, function(record, i) {
+                        return _c(
+                          "div",
+                          {
+                            key: i,
+                            staticClass:
+                              "p-3 mb-10 border-solid border-2 border-gray-200"
+                          },
+                          [
+                            _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass:
+                                    "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                  attrs: { for: "record-" + i + "-path" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Record Path\n              "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass:
+                                  "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3",
+                                attrs: {
+                                  disabled: "",
+                                  type: "text",
+                                  id: "record-" + i + "-path"
+                                },
+                                domProps: { value: record.path }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "text-red text-xs italic" },
+                                [_vm._v("Temporary path for record.")]
+                              ),
+                              _vm._v(" "),
+                              _vm.errors[i] && _vm.errors[i].path.length
+                                ? _c(
+                                    "div",
+                                    { staticClass: "errors" },
+                                    _vm._l(_vm.errors[i].path, function(
+                                      error,
+                                      key
+                                    ) {
+                                      return _c(
+                                        "p",
+                                        {
+                                          key: key,
+                                          staticClass:
+                                            "text-red-600 text-xs italic"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                  " +
+                                              _vm._s(error) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass:
+                                    "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                  attrs: { for: "record-" + i + "-name" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Record Name\n              "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: record.name,
+                                    expression: "record.name"
+                                  }
+                                ],
+                                staticClass:
+                                  "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3",
+                                attrs: {
+                                  id: "record-" + i + "-name",
+                                  type: "text",
+                                  placeholder: "This is record name"
+                                },
+                                domProps: { value: record.name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      record,
+                                      "name",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "text-red text-xs italic" },
+                                [
+                                  _vm._v(
+                                    "The record will be available for search by this name."
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.errors[i] && _vm.errors[i].name.length
+                                ? _c(
+                                    "div",
+                                    { staticClass: "errors" },
+                                    _vm._l(_vm.errors[i].name, function(
+                                      error,
+                                      key
+                                    ) {
+                                      return _c(
+                                        "p",
+                                        {
+                                          key: key,
+                                          staticClass:
+                                            "text-red-600 text-xs italic"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                  " +
+                                              _vm._s(error) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass:
+                                    "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                  attrs: {
+                                    for: "record-" + i + "-default-search"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Default Search available\n              "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: record.default_search_available,
+                                    expression:
+                                      "record.default_search_available"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "record-" + i + "-default-search"
+                                },
+                                domProps: {
+                                  checked: Array.isArray(
+                                    record.default_search_available
+                                  )
+                                    ? _vm._i(
+                                        record.default_search_available,
+                                        null
+                                      ) > -1
+                                    : record.default_search_available
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = record.default_search_available,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = null,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          _vm.$set(
+                                            record,
+                                            "default_search_available",
+                                            $$a.concat([$$v])
+                                          )
+                                      } else {
+                                        $$i > -1 &&
+                                          _vm.$set(
+                                            record,
+                                            "default_search_available",
+                                            $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1))
+                                          )
+                                      }
+                                    } else {
+                                      _vm.$set(
+                                        record,
+                                        "default_search_available",
+                                        $$c
+                                      )
+                                    }
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "text-red text-xs italic" },
+                                [
+                                  _vm._v(
+                                    "Determine if record is available in default search"
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.errors[i] &&
+                              _vm.errors[i].default_search_available.length
+                                ? _c(
+                                    "div",
+                                    { staticClass: "errors" },
+                                    _vm._l(
+                                      _vm.errors[i].default_search_available,
+                                      function(error, key) {
+                                        return _c(
+                                          "p",
+                                          {
+                                            key: key,
+                                            staticClass:
+                                              "text-red-600 text-xs italic"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                  " +
+                                                _vm._s(error) +
+                                                "\n                "
+                                            )
+                                          ]
+                                        )
+                                      }
+                                    ),
+                                    0
+                                  )
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass:
+                                    "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                Tags\n              "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                [
+                                  _c("multiselect", {
+                                    attrs: {
+                                      "tag-placeholder": "Add this as new tag",
+                                      placeholder: "Search or add a tag",
+                                      label: "name",
+                                      "track-by": "uuid",
+                                      options: _vm.tags,
+                                      multiple: true,
+                                      taggable: true
+                                    },
+                                    on: {
+                                      tag: function(tag) {
+                                        _vm.addTag(tag, record)
+                                      }
+                                    },
+                                    model: {
+                                      value: record.tags,
+                                      callback: function($$v) {
+                                        _vm.$set(record, "tags", $$v)
+                                      },
+                                      expression: "record.tags"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("pre", { staticClass: "language-json" }, [
+                                    _c("code", [_vm._v(_vm._s(record.tags))])
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "text-red text-xs italic" },
+                                [
+                                  _vm._v(
+                                    "The record will be available for search by this pattern: tag#search "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.errors[i] && _vm.errors[i].tags.length
+                                ? _c(
+                                    "div",
+                                    { staticClass: "errors" },
+                                    _vm._l(_vm.errors[i].tags, function(
+                                      error,
+                                      key
+                                    ) {
+                                      return _c(
+                                        "p",
+                                        {
+                                          key: key,
+                                          staticClass:
+                                            "text-red-600 text-xs italic"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                  " +
+                                              _vm._s(error) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                : _vm._e()
+                            ])
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                },
+                [
+                  _c(
+                    "simple-button",
+                    {
+                      staticClass: "ml-1",
+                      attrs: {
+                        "hover-bg-color": "indigo-700",
+                        "bg-color": "indigo-600",
+                        loading: _vm.bulkRecordCreating
+                      },
+                      on: { clicked: _vm.onUploadRecordClick }
+                    },
+                    [_vm._v("\n          Upload\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "simple-button",
+                    {
+                      attrs: {
+                        "hover-bg-color": "gray-100",
+                        "bg-color": "gray-200",
+                        "text-color": "gray-700",
+                        "hover-text-color": "gray-600"
+                      },
+                      on: { clicked: _vm.hide }
+                    },
+                    [_vm._v("\n          Cancel\n        ")]
+                  )
+                ],
+                1
+              )
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "fixed inset-0 transition-opacity",
+        attrs: { "aria-hidden": "true" }
+      },
+      [_c("div", { staticClass: "absolute inset-0 bg-gray-500 opacity-75" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" },
+      [
+        _c(
+          "div",
+          { staticClass: "mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left" },
+          [
+            _c(
+              "h3",
+              {
+                staticClass: "text-lg leading-6 font-medium text-gray-900",
+                attrs: { id: "modal-headline" }
+              },
+              [_vm._v("\n            Bulk Record Upload\n          ")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-2" }, [
+              _c("p", { staticClass: "text-sm text-gray-500" }, [
+                _vm._v(
+                  "\n              Fill this form to Upload your Record\n            "
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 

@@ -73,7 +73,7 @@ class PageController extends Controller
             ->defaultSort($defaultSort);
 
         $paginated = $records
-            ->paginate($request->query('perPage') ?? 2);
+            ->paginate($request->query('perPage') ?? 15);
 
         $data = $paginated->toArray();
         $data['data'] = RecordResource::collection($paginated);

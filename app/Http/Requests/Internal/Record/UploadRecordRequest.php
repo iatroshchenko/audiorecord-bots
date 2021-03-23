@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Internal\Record;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UploadRecordRequest extends FormRequest
 {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Internal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\RecordRepository;
+use App\Http\Requests\Internal\Record\BulkCreateRecordRequest;
 use App\Http\Requests\Internal\Record\CreateRecordRequest;
 use App\Http\Requests\Internal\Record\DeleteRecordRequest;
 use App\Http\Resources\RecordResource;
@@ -27,6 +28,12 @@ class RecordController extends Controller
     public function create(CreateRecordRequest $request)
     {
         $this->recordService->createRecordFromRequest($request);
+        return $this->sendCreatedResponse();
+    }
+
+    public function bulkCreate(BulkCreateRecordRequest $request)
+    {
+        $this->recordService->bulkCreateRecordFromRequest($request);
         return $this->sendCreatedResponse();
     }
 
