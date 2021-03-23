@@ -58,8 +58,7 @@ class BulkCreateRecordRequest extends FormRequest
                 'array'
             ],
             'records.*.tags.*' => [
-                'exists:tags,uuid',
-                'distinct'
+                'exists:tags,uuid'
             ]
         ];
     }

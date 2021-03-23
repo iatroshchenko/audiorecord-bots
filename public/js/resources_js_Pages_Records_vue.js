@@ -1094,6 +1094,33 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1123,7 +1150,9 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
       recordFile: [],
 
       /* Bulk Record Creating */
-      bulkRecordCreating: false
+      bulkRecordCreating: false,
+      bulkRecordNameTargetSeparator: '-',
+      bulkRecordNameTextToDelete: '.ogg'
     };
   },
   props: {
@@ -1258,18 +1287,34 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
     /* Multiple file upload */
 
     /* Bulk Record Create */
-    onUploadRecordClick: function onUploadRecordClick() {
+    bulkRecordNameTransform: function bulkRecordNameTransform() {
       var _this6 = this;
+
+      this.files.forEach(function (file) {
+        var name = file.name.split(_this6.bulkRecordNameTextToDelete).join('');
+        var firstAppearanceIndex = file.name.indexOf(_this6.bulkRecordNameTargetSeparator);
+
+        if (firstAppearanceIndex) {
+          name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
+          name = name.split(_this6.bulkRecordNameTargetSeparator).join(' ');
+          name = name.split('#####').join(' - ');
+        }
+
+        file.name = name;
+      });
+    },
+    onUploadRecordClick: function onUploadRecordClick() {
+      var _this7 = this;
 
       if (this.bulkRecordCreating) return;
       this.bulkRecordCreating = true;
       this.clearErrors();
       this.bulkCreateRecords().then(function (res) {
-        _this6.done();
+        _this7.done();
       })["catch"](function (err) {
         var errors = err.response.data.errors;
-        Object.keys(_this6.errors).forEach(function (key) {
-          var certainError = _this6.errors[key];
+        Object.keys(_this7.errors).forEach(function (key) {
+          var certainError = _this7.errors[key];
           Object.keys(certainError).forEach(function (field) {
             // sample error key: records.0.path
             if (errors["records.".concat(key, ".").concat(field)]) {
@@ -1280,7 +1325,7 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
           });
         });
       })["finally"](function () {
-        _this6.bulkRecordCreating = false;
+        _this7.bulkRecordCreating = false;
       });
     },
     bulkCreateRecords: function bulkCreateRecords() {
@@ -1305,10 +1350,10 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
 
     /* Load */
     loadTags: function loadTags() {
-      var _this7 = this;
+      var _this8 = this;
 
       return axios__WEBPACK_IMPORTED_MODULE_4___default().get('/internal/tags').then(function (res) {
-        _this7.tags = _toConsumableArray(res.data.data);
+        _this8.tags = _toConsumableArray(res.data.data);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -18338,6 +18383,150 @@ var render = function() {
                                 "p-3 mb-10 border-solid border-2 border-indigo-200"
                             },
                             [
+                              _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                    attrs: { for: "name-divider" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Bulk Name Separator Cleanup\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.bulkRecordNameTargetSeparator,
+                                      expression:
+                                        "bulkRecordNameTargetSeparator"
+                                    }
+                                  ],
+                                  attrs: { type: "text", id: "name-divider" },
+                                  domProps: {
+                                    value: _vm.bulkRecordNameTargetSeparator
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.bulkRecordNameTargetSeparator =
+                                        $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "mb-1 text-red text-xs italic"
+                                  },
+                                  [
+                                    _vm._v(
+                                      'Change all dashes (or selected divider) to spaces except first divider (would be replaced with " - ")'
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "mb-3 text-red text-xs italic"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Type separator symbol we should look for and replace to spaces"
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                    attrs: { for: "name-delete-text" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Bulk Name Divider Cleanup\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.bulkRecordNameTextToDelete,
+                                      expression: "bulkRecordNameTextToDelete"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "text",
+                                    id: "name-delete-text"
+                                  },
+                                  domProps: {
+                                    value: _vm.bulkRecordNameTextToDelete
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.bulkRecordNameTextToDelete =
+                                        $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "mb-3 text-red text-xs italic"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Type text we should look for and get rid of"
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "mb-3" },
+                                  [
+                                    _c(
+                                      "simple-button",
+                                      {
+                                        staticClass: "ml-1",
+                                        attrs: {
+                                          "hover-bg-color": "indigo-700",
+                                          "bg-color": "indigo-600"
+                                        },
+                                        on: {
+                                          clicked: _vm.bulkRecordNameTransform
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                  Transform\n                "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ]),
+                              _vm._v(" "),
                               _c("div", { staticClass: "px-3 mb-6 md:mb-0" }, [
                                 _c(
                                   "label",

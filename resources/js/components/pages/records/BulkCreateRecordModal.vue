@@ -77,6 +77,33 @@
             <!-- Bulk controls -->
             <div v-if="files.length" class="p-3 mb-10 border-solid border-2 border-indigo-200">
               <div class="px-3 mb-6 md:mb-0">
+
+                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="name-divider">
+                  Bulk Name Separator Cleanup
+                </label>
+                <input type="text" id="name-divider" v-model="bulkRecordNameTargetSeparator">
+                <p class="mb-1 text-red text-xs italic">Change all dashes (or selected divider) to spaces except first divider (would be replaced with " - ")</p>
+                <p class="mb-3 text-red text-xs italic">Type separator symbol we should look for and replace to spaces</p>
+
+                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="name-delete-text">
+                  Bulk Name Divider Cleanup
+                </label>
+                <input type="text" id="name-delete-text" v-model="bulkRecordNameTextToDelete">
+                <p class="mb-3 text-red text-xs italic">Type text we should look for and get rid of</p>
+
+                <div class="mb-3">
+                  <simple-button
+                    hover-bg-color="indigo-700"
+                    bg-color="indigo-600"
+                    class="ml-1"
+                    @clicked="bulkRecordNameTransform"
+                  >
+                    Transform
+                  </simple-button>
+                </div>
+              </div>
+
+              <div class="px-3 mb-6 md:mb-0">
                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="bulk-default-search-available">
                   Bulk Default Search available
                 </label>
@@ -270,7 +297,9 @@
         recordFile: [],
 
         /* Bulk Record Creating */
-        bulkRecordCreating: false
+        bulkRecordCreating: false,
+        bulkRecordNameTargetSeparator: '-',
+        bulkRecordNameTextToDelete: '.ogg'
       }
     },
     props: {
@@ -390,6 +419,21 @@
       /* Multiple file upload */
 
       /* Bulk Record Create */
+      bulkRecordNameTransform() {
+        this.files.forEach(file => {
+          let name = file.name.split(this.bulkRecordNameTextToDelete).join('');
+
+          const firstAppearanceIndex = file.name.indexOf(this.bulkRecordNameTargetSeparator);
+          if (firstAppearanceIndex) {
+            name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
+            name = name.split(this.bulkRecordNameTargetSeparator).join(' ');
+            name = name.split('#####').join(' - ');
+          }
+
+          file.name = name;
+        })
+      },
+
       onUploadRecordClick() {
         if (this.bulkRecordCreating) return;
         this.bulkRecordCreating = true;
