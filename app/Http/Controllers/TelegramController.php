@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\ExternalServices\TelegramService;
 use App\Models\Record;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Longman\TelegramBot\Request as TelegramBotRequest;
 use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultVoice;
@@ -27,8 +26,6 @@ class TelegramController extends Controller
         TelegramBotRequest::initialize($this->telegramService->telegram());
 
         if (!$query) {
-            Log::info('no inline query');
-
             TelegramBotRequest::answerInlineQuery([
                 'inline_query_id' => $inlineQuery['id'],
                 'results' => [],
@@ -51,9 +48,9 @@ class TelegramController extends Controller
                 ->whereHas('tags', function ($q) use ($tag) {
                     $q->where('name', Str::lower($tag));
                 })
-                ->whereRaw('LOWER(name) LIKE %?%', [$query]);
+                ->whereRaw('LOWER(name) LIKE ?', ['%' . $query . '%']);
         } else {
-            $recordQuery = Record::whereRaw('LOWER(name) LIKE %?%', [$query])
+            $recordQuery = Record::whereRaw('LOWER(name) LIKE ?', ['%' . $query . '%'])
                 ->where('default_search_available', 1);
         }
 
@@ -69,8 +66,6 @@ class TelegramController extends Controller
                 'title' => $record->name
             ]);
         });
-
-        Log::info($voices);
 
         TelegramBotRequest::answerInlineQuery([
             'inline_query_id' => $inlineQuery['id'],
