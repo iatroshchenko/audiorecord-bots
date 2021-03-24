@@ -6,6 +6,7 @@ use App\ExternalServices\TelegramService;
 use App\Models\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Longman\TelegramBot\Request as TelegramBotRequest;
 use Longman\TelegramBot\Entities\InlineQuery\InlineQueryResultVoice;
 
@@ -36,6 +37,7 @@ class TelegramController extends Controller
 
             return;
         }
+        $query = Str::lower($query);
 
         /* Results */
         $queryWithTag = explode('#', $query);
@@ -47,11 +49,11 @@ class TelegramController extends Controller
                 'tags'
             ])
                 ->whereHas('tags', function ($q) use ($tag) {
-                    $q->where('name', $tag);
+                    $q->where('name', Str::lower($tag));
                 })
-                ->where('name', 'like', '%' . $query . '%');
+                ->whereRaw('LOWER(name) LIKE %?%', [$query]);
         } else {
-            $recordQuery = Record::where('name', 'like', '%' . $query . '%')
+            $recordQuery = Record::whereRaw('LOWER(name) LIKE %?%', [$query])
                 ->where('default_search_available', 1);
         }
 
