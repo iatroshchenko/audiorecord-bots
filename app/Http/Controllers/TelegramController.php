@@ -21,6 +21,8 @@ class TelegramController extends Controller
     public function webhook(Request $request)
     {
         $inlineQuery = $request->input('inline_query');
+        if (!$inlineQuery) return;
+
         $query = $inlineQuery['query'];
 
         TelegramBotRequest::initialize($this->telegramService->telegram());
