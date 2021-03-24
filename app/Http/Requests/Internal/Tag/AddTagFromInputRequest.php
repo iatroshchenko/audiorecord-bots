@@ -26,7 +26,7 @@ class AddTagFromInputRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'alpha_dash',
+                'alpha_dash_spaces_cyrillic',
                 'min:3',
                 'max:12'
             ]

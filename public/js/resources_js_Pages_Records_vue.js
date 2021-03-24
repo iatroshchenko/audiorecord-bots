@@ -1121,6 +1121,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1152,7 +1164,9 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
       /* Bulk Record Creating */
       bulkRecordCreating: false,
       bulkRecordNameTargetSeparator: '-',
-      bulkRecordNameTextToDelete: '.ogg'
+      bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance: true,
+      bulkRecordNameTextToDelete: '.ogg',
+      bulkRecordNameAuthorName: ''
     };
   },
   props: {
@@ -1291,15 +1305,25 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
       var _this6 = this;
 
       this.files.forEach(function (file) {
+        // get rid of textToDelete
         var name = file.name.split(_this6.bulkRecordNameTextToDelete).join('');
         var firstAppearanceIndex = file.name.indexOf(_this6.bulkRecordNameTargetSeparator);
 
         if (firstAppearanceIndex) {
-          name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
-          name = name.split(_this6.bulkRecordNameTargetSeparator).join(' ');
-          name = name.split('#####').join(' - ');
-        }
+          // if we need special replacement for first appearance - we mark first appearance as #####
+          if (_this6.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance) {
+            name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
+          }
 
+          name = name.split(_this6.bulkRecordNameTargetSeparator).join(' '); // and then we replace it with special separator
+
+          if (_this6.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance) {
+            name = name.split('#####').join(' - ');
+          }
+        } // add author
+
+
+        name = _this6.bulkRecordNameAuthorName ? _this6.bulkRecordNameAuthorName + ' - ' + name : name;
         file.name = name;
       });
     },
@@ -18389,6 +18413,56 @@ var render = function() {
                                   {
                                     staticClass:
                                       "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                    attrs: { for: "author-name" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Author Name\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.bulkRecordNameAuthorName,
+                                      expression: "bulkRecordNameAuthorName"
+                                    }
+                                  ],
+                                  attrs: { type: "text", id: "author-name" },
+                                  domProps: {
+                                    value: _vm.bulkRecordNameAuthorName
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.bulkRecordNameAuthorName =
+                                        $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "mb-3 text-red text-xs italic"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "Type Author name to add (if needed)"
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
                                     attrs: { for: "name-divider" }
                                   },
                                   [
@@ -18443,6 +18517,84 @@ var render = function() {
                                   [
                                     _vm._v(
                                       "Type separator symbol we should look for and replace to spaces"
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2",
+                                    attrs: { for: "replace-first-appearance" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                Replace First Separator with author divider\n              "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance,
+                                      expression:
+                                        "bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "checkbox",
+                                    id: "replace-first-appearance"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(
+                                      _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance
+                                    )
+                                      ? _vm._i(
+                                          _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance,
+                                          null
+                                        ) > -1
+                                      : _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a =
+                                          _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            (_vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance = $$a.concat(
+                                              [$$v]
+                                            ))
+                                        } else {
+                                          $$i > -1 &&
+                                            (_vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance = $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1)))
+                                        }
+                                      } else {
+                                        _vm.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance = $$c
+                                      }
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "mb-3 text-red text-xs italic"
+                                  },
+                                  [
+                                    _vm._v(
+                                      'Should we replace first separator with " - "'
                                     )
                                   ]
                                 ),

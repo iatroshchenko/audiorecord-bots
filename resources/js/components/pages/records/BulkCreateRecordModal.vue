@@ -77,13 +77,25 @@
             <!-- Bulk controls -->
             <div v-if="files.length" class="p-3 mb-10 border-solid border-2 border-indigo-200">
               <div class="px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="author-name">
+                  Author Name
+                </label>
+                <input type="text" id="author-name" v-model="bulkRecordNameAuthorName">
+                <p class="mb-3 text-red text-xs italic">Type Author name to add (if needed)</p>
 
                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="name-divider">
                   Bulk Name Separator Cleanup
                 </label>
                 <input type="text" id="name-divider" v-model="bulkRecordNameTargetSeparator">
+
                 <p class="mb-1 text-red text-xs italic">Change all dashes (or selected divider) to spaces except first divider (would be replaced with " - ")</p>
                 <p class="mb-3 text-red text-xs italic">Type separator symbol we should look for and replace to spaces</p>
+
+                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="replace-first-appearance">
+                  Replace First Separator with author divider
+                </label>
+                <input type="checkbox" id="replace-first-appearance" v-model="bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance">
+                <p class="mb-3 text-red text-xs italic">Should we replace first separator with " - "</p>
 
                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="name-delete-text">
                   Bulk Name Divider Cleanup
@@ -299,7 +311,9 @@
         /* Bulk Record Creating */
         bulkRecordCreating: false,
         bulkRecordNameTargetSeparator: '-',
-        bulkRecordNameTextToDelete: '.ogg'
+        bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance: true,
+        bulkRecordNameTextToDelete: '.ogg',
+        bulkRecordNameAuthorName: ''
       }
     },
     props: {
@@ -421,14 +435,27 @@
       /* Bulk Record Create */
       bulkRecordNameTransform() {
         this.files.forEach(file => {
+          // get rid of textToDelete
           let name = file.name.split(this.bulkRecordNameTextToDelete).join('');
 
           const firstAppearanceIndex = file.name.indexOf(this.bulkRecordNameTargetSeparator);
           if (firstAppearanceIndex) {
-            name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
+
+            // if we need special replacement for first appearance - we mark first appearance as #####
+            if (this.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance) {
+              name = name.substring(0, firstAppearanceIndex) + '#####' + name.substring(firstAppearanceIndex + 1);
+            }
+
             name = name.split(this.bulkRecordNameTargetSeparator).join(' ');
-            name = name.split('#####').join(' - ');
+
+            // and then we replace it with special separator
+            if (this.bulkRecordNameTargetSeparatorSpecialReplaceForFirstAppearance) {
+              name = name.split('#####').join(' - ');
+            }
           }
+
+          // add author
+          name = this.bulkRecordNameAuthorName ? this.bulkRecordNameAuthorName + ' - ' + name : name;
 
           file.name = name;
         })
