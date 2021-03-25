@@ -57,6 +57,7 @@ class TelegramController extends Controller
         }
 
         $results = $recordQuery
+            ->orderByDesc('id')
             ->limit(50)
             ->get();
 
